@@ -13,10 +13,6 @@ describe "CSV adapter" do
     setup.schema do
       base_relation(:users) do
         repository :csv
-
-        attribute "id"
-        attribute "name"
-        attribute "email"
       end
     end
 
