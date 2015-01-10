@@ -29,7 +29,7 @@ module ROM
         connection
       end
 
-      def dataset(_name, _header)
+      def dataset(_name)
         Dataset.new(connection)
       end
 
