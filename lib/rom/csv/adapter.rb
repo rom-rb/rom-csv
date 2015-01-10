@@ -10,7 +10,7 @@ module ROM
         include Enumerable
 
         def each
-          rows.each { |row| yield(row.to_h) }
+          rows.each { |row| yield(row.to_hash) }
         end
       end
 
