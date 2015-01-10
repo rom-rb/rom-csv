@@ -47,10 +47,4 @@ describe "CSV adapter" do
       expect(jane.email).to eql("jane@doe.org")
     end
   end
-
-  describe "dataset#header" do
-    it "returns the header defined in the schema" do
-      expect(rom.relations.users.header).to eql(%w(id name email))
-    end
-  end
 end
