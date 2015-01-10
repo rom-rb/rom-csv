@@ -1,3 +1,5 @@
+require 'rom/array_dataset'
+
 module ROM
   module CSV
     class Adapter < ROM::Adapter
@@ -7,10 +9,10 @@ module ROM
 
       class Dataset
         include Charlatan.new(:rows)
-        include Enumerable
+        include ROM::ArrayDataset
 
-        def each
-          rows.each { |row| yield(row.to_hash) }
+        def self.row_proc
+          -> row { row.to_hash }
         end
       end
 
