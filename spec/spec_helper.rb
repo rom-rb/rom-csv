@@ -8,6 +8,10 @@ if RUBY_ENGINE == "rbx"
   CodeClimate::TestReporter.start
 end
 
+RSpec.configure do |config|
+  config.expect_with :rspec, :minitest
+end
+
 require "rom-csv"
 
 root = Pathname(__FILE__).dirname
