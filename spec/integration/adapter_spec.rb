@@ -7,15 +7,9 @@ describe "CSV adapter" do
   let(:path) { File.expand_path("./spec/fixtures/users.csv") }
 
   # If :csv is not passed in the repository is named `:default`
-  let(:setup) { ROM.setup(csv: "csv://#{path}") }
+  let(:setup) { ROM.setup("csv://#{path}") }
 
   before do
-    setup.schema do
-      base_relation(:users) do
-        repository :csv
-      end
-    end
-
     setup.relation(:users) do
       def by_name(name)
         find_all { |row| row[:name] == name }
