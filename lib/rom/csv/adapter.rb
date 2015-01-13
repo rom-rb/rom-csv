@@ -1,42 +1,36 @@
-require 'rom/array_dataset'
+require 'rom/csv/dataset'
 
 module ROM
   module CSV
     class Adapter < ROM::Adapter
+      attr_reader :datasets
+
       def self.schemes
         [:csv]
       end
 
-      class Dataset
-        include Charlatan.new(:rows)
-        include ROM::ArrayDataset
-
-        def self.row_proc
-          -> row { row.to_hash }
-        end
-      end
-
       # Expect a path to a single csv file which will be registered by rom to
       # the given name or :default as the repository.
-      def initialize(*args)
-        super
+      def setup
+        @datasets = {}
         # Uses CSV::table which passes the following csv options:
         #  headers: true
         #  converters: numeric
         #  header_converters: :symbol
+        #
         @connection = ::CSV.table("#{uri.host}#{uri.path}").by_row!
       end
 
-      def [](_name)
-        connection
+      def [](name)
+        datasets[name]
       end
 
-      def dataset(_name)
-        Dataset.new(connection)
+      def dataset(name)
+        datasets[name] = Dataset.new(connection)
       end
 
-      def dataset?(_name)
-        connection
+      def dataset?(name)
+        datasets.key?(name)
       end
     end
   end
