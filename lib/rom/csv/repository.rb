@@ -1,8 +1,9 @@
+require 'rom/repository'
 require 'rom/csv/dataset'
 
 module ROM
   module CSV
-    class Adapter < ROM::Adapter
+    class Repository < ROM::Repository
       attr_reader :datasets
 
       def self.schemes
