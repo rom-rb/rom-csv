@@ -1,10 +1,10 @@
-require "spec_helper"
-require "anima"
+require 'spec_helper'
+require 'anima'
 
-describe "CSV adapter" do
+describe 'CSV adapter' do
   subject(:rom) { setup.finalize }
 
-  let(:path) { File.expand_path("./spec/fixtures/users.csv") }
+  let(:path) { File.expand_path('./spec/fixtures/users.csv') }
 
   # If :csv is not passed in the repository is named `:default`
   let(:setup) { ROM.setup("csv://#{path}") }
@@ -28,13 +28,13 @@ describe "CSV adapter" do
     end
   end
 
-  describe "env#read" do
-    it "returns mapped object" do
-      jane = rom.read(:users).by_name("Jane").to_a.first
+  describe 'env#read' do
+    it 'returns mapped object' do
+      jane = rom.read(:users).by_name('Jane').to_a.first
 
       expect(jane.id).to eql(2)
-      expect(jane.name).to eql("Jane")
-      expect(jane.email).to eql("jane@doe.org")
+      expect(jane.name).to eql('Jane')
+      expect(jane.email).to eql('jane@doe.org')
     end
   end
 end
