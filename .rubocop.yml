@@ -1,0 +1,9 @@
+# Documentation checked by Inch CI
+Style/Documentation:
+  Enabled: false
+
+Style/FileName:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
