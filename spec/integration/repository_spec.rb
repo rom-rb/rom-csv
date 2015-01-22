@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'anima'
 
-describe 'CSV adapter' do
+describe 'CSV repository' do
   subject(:rom) { setup.finalize }
 
   let(:path) { File.expand_path('./spec/fixtures/users.csv') }
