@@ -6,20 +6,16 @@ module ROM
     class Repository < ROM::Repository
       attr_reader :datasets
 
-      def self.schemes
-        [:csv]
-      end
-
       # Expect a path to a single csv file which will be registered by rom to
       # the given name or :default as the repository.
-      def setup
+      #
+      # Uses CSV.table which passes the following csv options:
+      #  headers: true
+      #  converters: numeric
+      #  header_converters: :symbol
+      def initialize(path)
         @datasets = {}
-        # Uses CSV::table which passes the following csv options:
-        #  headers: true
-        #  converters: numeric
-        #  header_converters: :symbol
-        #
-        @connection = ::CSV.table("#{uri.host}#{uri.path}").by_row!
+        @connection = ::CSV.table(path).by_row!
       end
 
       def [](name)

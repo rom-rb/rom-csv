@@ -7,7 +7,7 @@ describe 'CSV repository' do
   let(:path) { File.expand_path('./spec/fixtures/users.csv') }
 
   # If :csv is not passed in the repository is named `:default`
-  let(:setup) { ROM.setup("csv://#{path}") }
+  let(:setup) { ROM.setup(:csv, path) }
 
   before do
     setup.relation(:users) do
