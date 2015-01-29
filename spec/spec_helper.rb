@@ -8,6 +8,7 @@ if RUBY_ENGINE == 'rbx'
   CodeClimate::TestReporter.start
 end
 
+require 'rom'
 require 'rom-csv'
 
 root = Pathname(__FILE__).dirname

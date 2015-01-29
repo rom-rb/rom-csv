@@ -3,6 +3,8 @@ require 'rom/csv/dataset'
 
 module ROM
   module CSV
+    Relation = Class.new(ROM::Relation)
+
     class Repository < ROM::Repository
       attr_reader :datasets
 
