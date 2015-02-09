@@ -1,5 +1,5 @@
 language: ruby
-bundler_args: --without yard guard benchmarks
+bundler_args: --without tools
 script: "bundle exec rake spec"
 rvm:
   - 2.0

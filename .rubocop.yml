@@ -5,6 +5,11 @@ inherit_from: .rubocop_todo.yml
 Lint/AssignmentInCondition:
   Enabled: false
 
+# No need to handle LoadError in rake
+Lint/HandleExceptions:
+  Exclude:
+    - rakelib/*.rake
+
 # The enforced style doesn’t match Vim’s defaults
 Style/AlignParameters:
   Enabled: false

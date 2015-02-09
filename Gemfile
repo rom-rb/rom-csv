@@ -7,3 +7,7 @@ group :test do
   gem 'rspec', '~> 3.1'
   gem 'codeclimate-test-reporter', require: false
 end
+
+group :tools do
+  gem 'rubocop'
+end
