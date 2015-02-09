@@ -12,7 +12,7 @@ describe 'CSV repository' do
   before do
     setup.relation(:users) do
       def by_name(name)
-        find_all { |row| row[:name] == name }
+        dataset.find_all { |row| row[:name] == name }
       end
     end
 
