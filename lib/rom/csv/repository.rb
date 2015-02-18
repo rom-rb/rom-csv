@@ -1,6 +1,9 @@
 require 'rom/repository'
 require 'rom/csv/dataset'
 
+# Ruby Object Mapper
+#
+# @see http://rom-rb.org/
 module ROM
   # CSV support for ROM
   #
