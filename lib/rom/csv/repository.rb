@@ -31,7 +31,7 @@ module ROM
   #   p rom.read(:users).by_name('Jane').one
   #   # => #<User id=2, name="Jane", email="jane@doe.org">
   #
-  # Note: Currently, only read operations are supported.
+  # **Note: rom-csv is read only at the moment.**
   #
   # @api public
   module CSV
