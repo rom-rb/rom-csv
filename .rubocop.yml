@@ -60,4 +60,8 @@ Style/TrivialAccessors:
 
 # Allow rom-csv
 Style/FileName:
-    Enabled: false
+  Enabled: false
+
+# Allow logical `or`/`and` in conditionals
+Style/AndOr:
+  EnforcedStyle: conditionals
