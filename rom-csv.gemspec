@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['don@elskwid.net']
   spec.summary       = 'CSV support for Ruby Object Mapper'
   spec.description   = spec.summary
-  spec.homepage      = ''
+  spec.homepage      = 'http://rom-rb.org'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
