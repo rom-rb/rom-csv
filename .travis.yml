@@ -1,6 +1,8 @@
 language: ruby
 bundler_args: --without tools
 script: "bundle exec rake ci"
+env:
+  - CODECLIMATE_REPO_TOKEN=a49f28520e49a35d73c9b6ed3d78ae110e4a5d05b9f154b999578a5175add09d
 rvm:
   - 2.0
   - 2.1
