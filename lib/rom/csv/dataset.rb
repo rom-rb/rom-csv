@@ -1,13 +1,11 @@
-require 'rom/support/array_dataset'
+require 'rom/memory/dataset'
 
 module ROM
   module CSV
     # Dataset for CSV
     #
     # @api public
-    class Dataset
-      include ArrayDataset
-
+    class Dataset < ROM::Memory::Dataset
       # Convert each CSV::Row to a hash
       #
       # @api public

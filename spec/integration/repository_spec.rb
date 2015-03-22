@@ -12,7 +12,7 @@ describe 'CSV repository' do
   before do
     setup.relation(:users) do
       def by_name(name)
-        dataset.find_all { |row| row[:name] == name }
+        restrict(name: name)
       end
     end
 
@@ -24,13 +24,14 @@ describe 'CSV repository' do
     setup.mappers do
       define(:users) do
         model User
+        register_as :entity
       end
     end
   end
 
-  describe 'env#read' do
+  describe 'env#relation' do
     it 'returns mapped object' do
-      jane = rom.read(:users).by_name('Jane').to_a.first
+      jane = rom.relation(:users).as(:entity).by_name('Jane').to_a.first
 
       expect(jane.id).to eql(2)
       expect(jane.name).to eql('Jane')

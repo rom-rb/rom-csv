@@ -35,15 +35,6 @@ module ROM
   #
   # @api public
   module CSV
-    # Relation subclass of CSV adapter
-    #
-    # @example
-    #   class Users < ROM::Relation[:csv]
-    #   end
-    #
-    # @api public
-    Relation = Class.new(ROM::Relation)
-
     # CSV repository interface
     #
     # @api public
