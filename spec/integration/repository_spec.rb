@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'anima'
+require 'virtus'
 
 describe 'CSV repository' do
   subject(:rom) { setup.finalize }
@@ -17,8 +17,11 @@ describe 'CSV repository' do
     end
 
     class User
-      # Anima allows creation of an instance with an attribute hash
-      include Anima.new(:id, :name, :email)
+      include Virtus.model
+
+      attribute :id, Integer
+      attribute :name, String
+      attribute :email, String
     end
 
     setup.mappers do
