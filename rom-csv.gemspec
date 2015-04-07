@@ -20,7 +20,6 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'rom', '~> 0.6.0'
 
-  spec.add_development_dependency 'anima'
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rubocop', '~> 0.28.0'
