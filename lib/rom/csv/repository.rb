@@ -48,13 +48,14 @@ module ROM
       # * header_converters: :symbol
       #
       # @param path [String] path to csv
+      # @param options [Hash] options passed to CSV.table
       #
       # @api private
       #
       # @see CSV.table
-      def initialize(path)
+      def initialize(path, options = {})
         @datasets = {}
-        @connection = ::CSV.table(path).by_row!
+        @connection = ::CSV.table(path, options).by_row!
       end
 
       # Return dataset with the given name
