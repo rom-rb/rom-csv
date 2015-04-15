@@ -81,7 +81,8 @@ describe 'CSV repository' do
         user = rom.relation(:users).to_a.last
 
         expect(user[:id]).to eql(4)
-        expect(user[:name]).to_not eql('Żółw')
+        expect(user[:name].bytes.to_a)
+          .to eql("\xC5\xBB\xC3\xB3\xC5\x82w".bytes.to_a)
         expect(user[:email]).to eql('zolw@example.com')
       end
     end
