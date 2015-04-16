@@ -8,7 +8,7 @@
 
 * Improve test coverage (wafcio)
 
-[Compare v0.0.1...v0.1.0](https://github.com/rom-rb/rom/compare/v0.0.1...v0.1.0)
+[Compare v0.0.1...v0.1.0](https://github.com/rom-rb/rom-csv/compare/v0.0.1...v0.1.0)
 
 ## v0.0.1 2015-03-22
 
