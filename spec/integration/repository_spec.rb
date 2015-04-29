@@ -87,7 +87,6 @@ describe 'CSV gateway' do
       it 'returns restricted and mapped object' do
         jane = rom.relation(:users).as(:entity).by_name('Jane').to_a.first
 
-        expect(jane.user_id).to eql(3)
         expect(jane.name).to eql('Jane')
         expect(jane.email).to eql('jane@doe.org')
       end
