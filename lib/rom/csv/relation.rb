@@ -11,6 +11,10 @@ module ROM
     # @api public
     class Relation < ROM::Relation
       forward :join, :project, :restrict, :order
+
+      def count
+        dataset.count
+      end
     end
   end
 end

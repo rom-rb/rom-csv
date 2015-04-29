@@ -35,6 +35,10 @@ module ROM
       def load_data
         ::CSV.table(path, file_options).by_row!
       end
+
+      def count
+        data.count
+      end
     end
   end
 end
