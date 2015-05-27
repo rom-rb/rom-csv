@@ -2,11 +2,11 @@ require 'spec_helper'
 
 require 'rom/lint/spec'
 
-describe ROM::CSV::Repository do
-  let(:repository) { ROM::CSV::Repository }
+describe ROM::CSV::Gateway do
+  let(:gateway) { ROM::CSV::Gateway }
   let(:uri) { File.expand_path('./spec/fixtures/users.csv') }
 
-  it_behaves_like "a rom repository" do
+  it_behaves_like "a rom gateway" do
     let(:identifier) { :csv }
   end
 end

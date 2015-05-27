@@ -1,4 +1,4 @@
-require 'rom/repository'
+require 'rom/gateway'
 require 'rom/csv/dataset'
 
 # Ruby Object Mapper
@@ -35,12 +35,12 @@ module ROM
   #
   # @api public
   module CSV
-    # CSV repository interface
+    # CSV gateway interface
     #
     # @api public
-    class Repository < ROM::Repository
+    class Gateway < ROM::Gateway
       # Expect a path to a single csv file which will be registered by rom to
-      # the given name or :default as the repository.
+      # the given name or :default as the gateway.
       #
       # Uses CSV.table which passes the following csv options:
       # * headers: true
@@ -68,7 +68,7 @@ module ROM
         datasets[name]
       end
 
-      # Register a dataset in the repository
+      # Register a dataset in the gateway
       #
       # If dataset already exists it will be returned
       #

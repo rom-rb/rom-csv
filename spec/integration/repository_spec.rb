@@ -1,9 +1,9 @@
 require 'spec_helper'
 require 'virtus'
 
-describe 'CSV repository' do
+describe 'CSV gateway' do
   context 'without extra options' do
-    # If :csv is not passed in the repository is named `:default`
+    # If :csv is not passed in the gateway is named `:default`
     let(:path) { File.expand_path('./spec/fixtures/users.csv') }
     let(:setup) { ROM.setup(:csv, path) }
     subject(:rom) { setup.finalize }
