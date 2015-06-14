@@ -1,6 +1,8 @@
 require 'spec_helper'
 require 'virtus'
 
+require_relative '../../support/user'
+
 describe 'Commands / Create' do
   subject(:rom) { setup.finalize }
 
@@ -16,14 +18,6 @@ describe 'Commands / Create' do
     FileUtils.copy(original_path, path)
 
     setup.relation(:users)
-
-    class User
-      include Virtus.model
-
-      attribute :id, Integer
-      attribute :name, String
-      attribute :email, String
-    end
 
     setup.mappers do
       define(:users) do

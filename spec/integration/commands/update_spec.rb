@@ -1,6 +1,8 @@
 require 'spec_helper'
 require 'virtus'
 
+require_relative '../../support/user'
+
 describe 'Commands / Updates' do
   subject(:rom) { setup.finalize }
 
@@ -26,14 +28,6 @@ describe 'Commands / Updates' do
       def by_id(id)
         restrict(user_id: id)
       end
-    end
-
-    class User
-      include Virtus.model
-
-      attribute :id, Integer
-      attribute :name, String
-      attribute :email, String
     end
 
     setup.mappers do
