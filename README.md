@@ -15,8 +15,6 @@
 
 CSV support for [Ruby Object Mapper](https://github.com/rom-rb/rom)
 
-**Note: rom-csv is read only at the moment.**
-
 ## Installation
 
 Add this line to your application's Gemfile:

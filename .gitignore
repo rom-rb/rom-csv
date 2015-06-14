@@ -13,3 +13,4 @@
 *.a
 mkmf.log
 spec/fixtures/testing.csv
+examples/report.csv

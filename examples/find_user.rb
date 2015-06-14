@@ -25,6 +25,6 @@ end
 
 rom = setup.finalize
 user = rom.relation(:users).as(:entity).by_name('Jane').one
-# => #<User id=2, name="Jane", email="jane@doe.org">
+# => #<User user_id=2, name="Jane", email="jane@doe.org">
 
 user or abort "user not found"
