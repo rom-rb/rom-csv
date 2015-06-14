@@ -40,9 +40,6 @@ describe 'Commands / Delete' do
     expect(result.value)
       .to eql(user_id: 1, name: "Julie", email: "julie.andrews@example.com")
 
-    # FIXME: reload! should not be necessary
-    rom.relation(:users).relation.dataset.reload!
-
     result = rom.relation(:users).to_a
     expect(result.count).to eql(2)
   end

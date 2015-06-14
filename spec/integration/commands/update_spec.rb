@@ -49,9 +49,6 @@ describe 'Commands / Updates' do
 
     expect(result.value.to_a).to match_array(output_data)
 
-    # FIXME: reload! should not be necessary
-    rom.relation(:users).relation.dataset.reload!
-
     result = rom.relation(:users).as(:entity).by_id(1).to_a.first
     expect(result.email).to eql('tester@example.com')
   end
