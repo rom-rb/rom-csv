@@ -10,6 +10,8 @@ module ROM
     #
     # @api public
     class Relation < ROM::Relation
+      adapter :csv
+
       forward :join, :project, :restrict, :order
 
       def count

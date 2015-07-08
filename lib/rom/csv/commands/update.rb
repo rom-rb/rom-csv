@@ -5,6 +5,8 @@ module ROM
   module CSV
     module Commands
       class Update < ROM::Commands::Update
+        adapter :csv
+
         def execute(tuple)
           attributes = input[tuple]
           validator.call(attributes)
