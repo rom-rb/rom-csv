@@ -5,6 +5,8 @@ module ROM
   module CSV
     module Commands
       class Create < ROM::Commands::Create
+        adapter :csv
+
         def execute(tuples)
           insert_tuples =  [tuples].flatten.map do |tuple|
             attributes = input[tuple]

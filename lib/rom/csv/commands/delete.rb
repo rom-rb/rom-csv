@@ -5,6 +5,8 @@ module ROM
   module CSV
     module Commands
       class Delete < ROM::Commands::Delete
+        adapter :csv
+
         def execute
           original_data = original_dataset.to_a
 
