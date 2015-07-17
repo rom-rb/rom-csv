@@ -19,20 +19,29 @@ module ROM
         end
 
         def insert(tuples)
-          tuples.each { |tuple| dataset << new_row(tuple) }
+          headers = headers_from_csv || headers_from_tuple(tuples.first)
+          tuples.each { |tuple| dataset << new_row(headers, tuple) }
           dataset.sync!
         end
 
-        def new_row(tuple)
-          ::CSV::Row.new(dataset.data.headers, ordered_data(tuple))
+        def new_row(headers, tuple)
+          ::CSV::Row.new(headers, ordered_data(headers, tuple))
         end
 
-        def ordered_data(tuple)
-          dataset.data.headers.map { |header| tuple[header] }
+        def ordered_data(headers, tuple)
+          headers.map { |header| tuple[header] }
         end
 
-        def dataset
-          relation.dataset
+         def dataset
+           relation.dataset
+         end
+
+        def headers_from_csv
+          dataset.data.headers unless dataset.data.headers.empty?
+        end
+
+        def headers_from_tuple(tuple)
+          tuple.keys
         end
       end
     end

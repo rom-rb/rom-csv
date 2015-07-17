@@ -1,6 +1,8 @@
 require 'spec_helper'
 require 'virtus'
 
+require_relative '../../support/user'
+
 describe 'Commands / Updates' do
   subject(:rom) { setup.finalize }
 
@@ -28,14 +30,6 @@ describe 'Commands / Updates' do
       end
     end
 
-    class User
-      include Virtus.model
-
-      attribute :id, Integer
-      attribute :name, String
-      attribute :email, String
-    end
-
     setup.mappers do
       define(:users) do
         model User
@@ -54,9 +48,6 @@ describe 'Commands / Updates' do
     end
 
     expect(result.value.to_a).to match_array(output_data)
-
-    # FIXME: reload! should not be necessary
-    rom.relation(:users).relation.dataset.reload!
 
     result = rom.relation(:users).as(:entity).by_id(1).to_a.first
     expect(result.email).to eql('tester@example.com')
