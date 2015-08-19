@@ -6,7 +6,10 @@ require 'ostruct'
 
 csv_file = ARGV[0] || File.expand_path("./users.csv", File.dirname(__FILE__))
 
+ROM.use :auto_registration
+
 setup = ROM.setup(:csv, csv_file)
+
 setup.relation(:users) do
   def by_name(name)
     restrict(name: name)
