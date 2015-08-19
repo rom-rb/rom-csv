@@ -14,3 +14,5 @@ require 'rom-csv'
 root = Pathname(__FILE__).dirname
 
 Dir[root.join('shared/*.rb').to_s].each { |f| require f }
+
+ROM.use :auto_registration
