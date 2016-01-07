@@ -2,20 +2,12 @@ require 'spec_helper'
 require 'virtus'
 
 describe 'Commands / Create' do
-  subject(:rom) { setup.finalize }
+  include_context 'database setup'
 
-  let(:original_path) { File.expand_path('./spec/fixtures/users.csv') }
-  let(:path) { File.expand_path('./spec/fixtures/testing.csv') }
-
-  # If :csv is not passed in the gateway is named `:default`
-  let(:setup) { ROM.setup(:csv, path) }
-
-  subject(:users) { rom.commands.users }
+  subject(:users) { container.commands.users }
 
   before do
-    FileUtils.copy(original_path, path)
-
-    setup.relation(:users)
+    configuration.relation(:users)
 
     class User
       include Virtus.model
@@ -25,14 +17,14 @@ describe 'Commands / Create' do
       attribute :email, String
     end
 
-    setup.mappers do
+    configuration.mappers do
       define(:users) do
         model User
         register_as :entity
       end
     end
 
-    setup.commands(:users) do
+    configuration.commands(:users) do
       define(:create) do
         result :one
       end
@@ -49,7 +41,7 @@ describe 'Commands / Create' do
     end
     expect(result.value).to eql(user_id: 4, name: 'John', email: 'john@doe.org')
 
-    result = rom.relation(:users).as(:entity).to_a
+    result = container.relation(:users).as(:entity).to_a
     expect(result.count).to eql(4)
   end
 
@@ -66,7 +58,7 @@ describe 'Commands / Create' do
       { user_id: 5, name: 'Jack', email: 'jack@doe.org' }
     ])
 
-    result = rom.relation(:users).as(:entity).to_a
+    result = container.relation(:users).as(:entity).to_a
     expect(result.count).to eql(5)
   end
 end
