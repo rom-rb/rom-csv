@@ -1,26 +1,18 @@
 require 'spec_helper'
 
 describe 'Commands / Delete' do
-  subject(:rom) { setup.finalize }
+  include_context 'database setup'
 
-  let(:original_path) { File.expand_path('./spec/fixtures/users.csv') }
-  let(:path) { File.expand_path('./spec/fixtures/testing.csv') }
-
-  # If :csv is not passed in the gateway is named `:default`
-  let(:setup) { ROM.setup(:csv, path) }
-
-  subject(:users) { rom.commands.users }
+  subject(:users) { container.commands.users }
 
   before do
-    FileUtils.copy(original_path, path)
-
-    setup.relation(:users) do
+    configuration.relation(:users) do
       def by_id(id)
         restrict(user_id: id)
       end
     end
 
-    setup.commands(:users) do
+    configuration.commands(:users) do
       define(:delete) do
         result :one
       end
@@ -40,9 +32,9 @@ describe 'Commands / Delete' do
     expect(result.value)
       .to eql(user_id: 1, name: "Julie", email: "julie.andrews@example.com")
 
-    rom.relation(:users).dataset.reload!
+    container.relation(:users).dataset.reload!
 
-    result = rom.relation(:users).to_a
+    result = container.relation(:users).to_a
     expect(result.count).to eql(2)
   end
 end

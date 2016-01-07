@@ -2,17 +2,11 @@ require 'spec_helper'
 require 'virtus'
 
 describe 'Commands / Updates' do
-  subject(:rom) { setup.finalize }
+  include_context 'database setup'
 
-  let(:original_path) { File.expand_path('./spec/fixtures/users.csv') }
-  let(:path) { File.expand_path('./spec/fixtures/testing.csv') }
+  subject(:users) { container.commands.users }
 
-  # If :csv is not passed in the gateway is named `:default`
-  let(:setup) { ROM.setup(:csv, path) }
-
-  subject(:users) { rom.commands.users }
-
-  let(:relation) { rom.relations.users }
+  let(:relation) { container.relations.users }
   let(:first_data) { relation.by_id(1).to_a.first }
   let(:new_data) { { name: 'Peter' } }
   let(:output_data) do
@@ -20,9 +14,7 @@ describe 'Commands / Updates' do
   end
 
   before do
-    FileUtils.copy(original_path, path)
-
-    setup.relation(:users) do
+    configuration.relation(:users) do
       def by_id(id)
         restrict(user_id: id)
       end
@@ -36,14 +28,14 @@ describe 'Commands / Updates' do
       attribute :email, String
     end
 
-    setup.mappers do
+    configuration.mappers do
       define(:users) do
         model User
         register_as :entity
       end
     end
 
-    setup.commands(:users) do
+    configuration.commands(:users) do
       define(:update)
     end
   end
@@ -56,9 +48,9 @@ describe 'Commands / Updates' do
     expect(result.value.to_a).to match_array(output_data)
 
     # FIXME: reload! should not be necessary
-    rom.relation(:users).dataset.reload!
+    container.relation(:users).dataset.reload!
 
-    result = rom.relation(:users).as(:entity).by_id(1).to_a.first
+    result = container.relation(:users).as(:entity).by_id(1).to_a.first
     expect(result.email).to eql('tester@example.com')
   end
 end
