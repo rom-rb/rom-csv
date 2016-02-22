@@ -1,3 +1,7 @@
+## v0.3.0 2016-02-22
+
+* Update dependency to ROM 1.0
+
 ## v0.2.0 2015-08-19
 
 ### Added
