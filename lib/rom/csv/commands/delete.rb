@@ -8,10 +8,8 @@ module ROM
         adapter :csv
 
         def execute
-          original_data = original_dataset.to_a
-
-          dataset.each do |dataset_tuple|
-            index = original_data.index(dataset_tuple)
+          dataset.to_a.each do |dataset_tuple|
+            index = original_dataset.to_a.index(dataset_tuple)
             original_dataset.data.delete(index)
           end
 

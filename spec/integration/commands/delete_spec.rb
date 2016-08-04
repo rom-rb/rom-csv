@@ -13,24 +13,23 @@ describe 'Commands / Delete' do
     end
 
     configuration.commands(:users) do
-      define(:delete) do
-        result :one
-      end
+      define(:delete)
     end
   end
 
-  it 'raises error when tuple count does not match expectation' do
-    result = users.try { users.delete.call }
+  it 'deletes all records when no restrictions provided' do
+   expect {
+     results = users.delete.call
 
-    expect(result.value).to be(nil)
-    expect(result.error).to be_instance_of(ROM::TupleCountMismatchError)
+     expect(container.relations.users.to_a).to eql([])
+   }.to change{ container.relations.users.count }.from(3).to(0)
   end
 
   it 'deletes all tuples in a restricted relation' do
     result = users.try { users.delete.by_id(1).call }
 
     expect(result.value)
-      .to eql(user_id: 1, name: "Julie", email: "julie.andrews@example.com")
+      .to eql([user_id: 1, name: "Julie", email: "julie.andrews@example.com"])
 
     container.relation(:users).dataset.reload!
 
