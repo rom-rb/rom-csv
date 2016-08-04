@@ -27,7 +27,7 @@ module ROM
       def write_data
         ::CSV.open(path, 'wb', file_options) do |csv|
           data.to_a.each do |tuple|
-            csv << tuple
+            csv << tuple unless tuple.empty?
           end
         end
       end
