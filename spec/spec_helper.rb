@@ -3,9 +3,11 @@
 require 'bundler'
 Bundler.require
 
-if RUBY_ENGINE == 'rbx'
-  require 'codeclimate-test-reporter'
-  CodeClimate::TestReporter.start
+if RUBY_ENGINE == 'ruby' && ENV['CI'] == 'true'
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter '/spec/'
+  end
 end
 
 require 'rom'
