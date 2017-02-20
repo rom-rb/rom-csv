@@ -10,7 +10,6 @@ module ROM
         def execute(tuples)
           insert_tuples = [tuples].flatten.map do |tuple|
             attributes = input[tuple]
-            validator.call(attributes)
             attributes.to_h
           end
 

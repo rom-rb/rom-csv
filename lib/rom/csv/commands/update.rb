@@ -9,7 +9,6 @@ module ROM
 
         def execute(tuple)
           attributes = input[tuple]
-          validator.call(attributes)
           tuple = attributes.to_h
 
           update(tuple)
