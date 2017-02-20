@@ -1,18 +1,22 @@
 language: ruby
+dist: trusty
+cache: bundler
 bundler_args: --without tools
 script: "bundle exec rake ci"
 env:
   - CODECLIMATE_REPO_TOKEN=a49f28520e49a35d73c9b6ed3d78ae110e4a5d05b9f154b999578a5175add09d
+  global:
+    - JRUBY_OPTS='--dev -J-Xmx1024M'
 rvm:
-  - 2.0
-  - 2.1
+  - 2.4.0
+  - 2.3
   - 2.2
-  - 2.3.0
-  - rbx-2
-  - jruby-9000
+  - rbx-3
+  - jruby-9.1.7.0
   - ruby-head
 matrix:
   allow_failures:
+    - rvm: rbx-3
     - rvm: ruby-head
 notifications:
   webhooks:
