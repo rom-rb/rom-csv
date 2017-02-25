@@ -21,6 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'rom', '~> 3.0'
 
   spec.add_development_dependency 'bundler'
-  spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'rake', '10.3'
+  spec.add_development_dependency 'rspec', '~> 3.5'
   spec.add_development_dependency 'rubocop', '~> 0.28.0'
 end
