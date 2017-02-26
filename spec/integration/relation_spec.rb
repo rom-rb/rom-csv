@@ -1,15 +1,19 @@
 require 'spec_helper'
 
-describe 'CSV gateway' do
+describe 'CSV relation' do
   context 'without extra options' do
     include_context 'database setup'
 
     before do
-      module TestPlugin; end
+      module Test
+        module RelationPlugin
+          # empty plugin for test purposes
+        end
+      end
 
       ROM.plugins do
         adapter :csv do
-          register :test_plugin, TestPlugin, type: :relation
+          register :test_plugin, Test::RelationPlugin, type: :relation
         end
       end
     end
