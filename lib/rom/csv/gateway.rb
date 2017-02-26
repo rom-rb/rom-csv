@@ -45,11 +45,11 @@ module ROM
 
       param :path,
             reader: :private,
-            type: Dry::Types['strict.string']
+            type: Types::Strict::String
       param :csv_options,
             default: proc { {} },
             reader: :private,
-            type: Dry::Types['strict.hash']
+            type: Types::Strict::Hash
 
       # @api private
       attr_reader :datasets
