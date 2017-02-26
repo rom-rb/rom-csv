@@ -1,4 +1,5 @@
 require 'rom/gateway'
+require 'rom/initializer'
 require 'rom/csv/dataset'
 require 'rom/csv/commands'
 
@@ -40,6 +41,20 @@ module ROM
     #
     # @api public
     class Gateway < ROM::Gateway
+      extend Initializer
+
+      param :path,
+            reader: :private,
+            type: Dry::Types['strict.string']
+      param :csv_options,
+            default: proc { {} },
+            reader: :private,
+            type: Dry::Types['strict.hash']
+
+      # @api private
+      attr_reader :datasets
+      private :datasets
+
       # Expect a path to a single csv file which will be registered by rom to
       # the given name or :default as the gateway.
       #
@@ -49,16 +64,15 @@ module ROM
       # * header_converters: :symbol
       #
       # @param path [String] path to csv
-      # @param options [Hash] options passed to CSV.table
+      # @param csv_options [Hash] options passed to CSV.table
       #
       # @api private
       #
       # @see CSV.table
-      def initialize(path, options = {})
+      def initialize(*)
+        super
         @datasets = {}
-        @path = path
-        @options = options
-        @connection = ::CSV.table(path, options).by_row!
+        @connection = ::CSV.table(path, csv_options).by_row!
       end
 
       # Return dataset with the given name
@@ -95,11 +109,8 @@ module ROM
       private
 
       def dataset_options
-        { path: path, file_options: options }
+        { path: path, file_options: csv_options }
       end
-
-      # @api private
-      attr_reader :datasets, :path, :options
     end
   end
 end
