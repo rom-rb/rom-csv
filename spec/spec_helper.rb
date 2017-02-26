@@ -15,6 +15,12 @@ require 'rom-csv'
 
 SPEC_ROOT = root = Pathname(__FILE__).dirname
 
+# Provide a `Types` module to specs
+require 'dry-types'
+module Types
+  include Dry::Types.module
+end
+
 RSpec.configure do |config|
   config.before do
     module Test

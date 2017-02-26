@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'virtus'
 
 describe 'CSV gateway' do
   context 'without extra options' do

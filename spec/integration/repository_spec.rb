@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'virtus'
+require 'dry-struct'
 
 describe 'CSV gateway' do
   context 'without extra options' do
@@ -30,42 +30,40 @@ describe 'CSV gateway' do
         gateway :addresses
       end
 
-      class User
-        include Virtus.model
+      module Test
+        class User < Dry::Struct
+          constructor_type :schema # allow missing keys
 
-        attribute :user_id, Integer
-        attribute :name, String
-        attribute :email, String
-      end
+          attribute :user_id, Types::Strict::Int.optional
+          attribute :name, Types::Strict::String
+          attribute :email, Types::Strict::String.optional
+        end
 
-      class UserWithAddress
-        include Virtus.model
+        class Address < Dry::Struct
+          attribute :address_id, Types::Strict::Int
+          attribute :street, Types::Strict::String
+        end
 
-        attribute :user_id, Integer
-        attribute :name, String
-        attribute :email, String
-        attribute :addresses
-      end
-
-      class Address
-        include Virtus.model
-
-        attribute :address_id, Integer
-        attribute :street, String
+        class UserWithAddress < Dry::Struct
+          attribute :user_id, Types::Strict::Int
+          attribute :name, Types::Strict::String
+          attribute :email, Types::Strict::String
+          attribute :addresses, Types::Strict::Array.member(Test::Address)
+        end
       end
 
       configuration.mappers do
         define(:users) do
-          model User
+          model Test::User
           register_as :entity
         end
 
         define(:users_with_address, parent: :users) do
-          model UserWithAddress
+          model Test::UserWithAddress
           register_as :entity_with_address
 
           group :addresses do
-            model Address
+            model Test::Address
 
             attribute :address_id
             attribute :street
@@ -107,10 +105,10 @@ describe 'CSV gateway' do
         results = container.relation(:users).as(:entity_with_address)
                   .with_addresses.first
 
-        expect(results.attributes.keys.sort)
+        expect(results.to_hash.keys.sort)
           .to eq([:user_id, :name, :email, :addresses].sort)
 
-        expect(results.addresses.first.attributes.keys.sort)
+        expect(results.addresses.first.to_hash.keys.sort)
           .to eq([:address_id, :street].sort)
       end
     end

@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'virtus'
+require 'dry-struct'
 
 describe 'Commands / Updates' do
   include_context 'database setup'
@@ -20,17 +20,17 @@ describe 'Commands / Updates' do
       end
     end
 
-    class User
-      include Virtus.model
-
-      attribute :id, Integer
-      attribute :name, String
-      attribute :email, String
+    module Test
+      class User < Dry::Struct
+        attribute :user_id, Types::Strict::Int
+        attribute :name, Types::Strict::String
+        attribute :email, Types::Strict::String
+      end
     end
 
     configuration.mappers do
       define(:users) do
-        model User
+        model Test::User
         register_as :entity
       end
     end
