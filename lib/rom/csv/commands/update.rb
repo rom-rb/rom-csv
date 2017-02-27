@@ -14,6 +14,8 @@ module ROM
           update(tuple)
         end
 
+        private
+
         def update(tuple)
           original_data = original_dataset.to_a
           output = []

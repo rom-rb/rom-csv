@@ -19,6 +19,8 @@ module ROM
           dataset.data
         end
 
+        private
+
         def dataset
           relation.dataset
         end

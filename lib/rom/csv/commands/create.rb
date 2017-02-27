@@ -17,6 +17,8 @@ module ROM
           insert_tuples
         end
 
+        private
+
         def insert(tuples)
           tuples.each { |tuple| dataset << new_row(tuple) }
           dataset.sync!
