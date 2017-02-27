@@ -9,6 +9,12 @@ describe 'CSV gateway' do
       configuration.relation(:users) do
         gateway :users
 
+        schema(:users) do
+          attribute :user_id, Types::Strict::Int
+          attribute :name, Types::Strict::String
+          attribute :email, Types::Strict::String
+        end
+
         def by_name(name)
           restrict(name: name)
         end
