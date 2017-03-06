@@ -1,4 +1,5 @@
 require 'rom/memory'
+require 'rom/plugins/relation/key_inference'
 
 module ROM
   module CSV
@@ -11,6 +12,7 @@ module ROM
     # @api public
     class Relation < ROM::Memory::Relation
       adapter :csv
+      use :key_inference
 
       def count
         dataset.count

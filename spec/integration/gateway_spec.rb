@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'dry-struct'
+require 'rom/repository'
 
 describe 'CSV gateway' do
   context 'without extra options' do
@@ -133,6 +134,19 @@ describe 'CSV gateway' do
         expect(user[:name].bytes.to_a)
           .to eql("\xC5\xBB\xC3\xB3\xC5\x82w".bytes.to_a)
         expect(user[:email]).to eql('zolw@example.com')
+      end
+    end
+
+    describe 'with a repository' do
+      let(:repo) do
+        Class.new(ROM::Repository[:users]).new(container)
+      end
+
+      it 'auto-maps to structs' do
+        user = repo.users.first
+
+        expect(user.name).to eql('Julie')
+        expect(user.email).to eql('julie.andrews@example.com')
       end
     end
   end
