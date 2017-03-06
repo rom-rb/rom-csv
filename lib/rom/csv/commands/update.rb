@@ -9,11 +9,12 @@ module ROM
 
         def execute(tuple)
           attributes = input[tuple]
-          validator.call(attributes)
           tuple = attributes.to_h
 
           update(tuple)
         end
+
+        private
 
         def update(tuple)
           original_data = original_dataset.to_a

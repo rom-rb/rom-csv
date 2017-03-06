@@ -19,13 +19,6 @@ describe 'Commands / Delete' do
     end
   end
 
-  it 'raises error when tuple count does not match expectation' do
-    result = users.try { users.delete.call }
-
-    expect(result.value).to be(nil)
-    expect(result.error).to be_instance_of(ROM::TupleCountMismatchError)
-  end
-
   it 'deletes all tuples in a restricted relation' do
     result = users.try { users.delete.by_id(1).call }
 

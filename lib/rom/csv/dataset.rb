@@ -1,13 +1,24 @@
 require 'rom/memory/dataset'
+require 'rom/csv/storage'
 
 module ROM
   module CSV
+    # Type definition used to constrain the `connection` option
+    StorageType = Types.Definition(Storage).constrained(type: Storage)
+
     # Dataset for CSV
     #
     # @api public
     class Dataset < ROM::Memory::Dataset
-      option :path, reader: true
-      option :file_options, reader: true
+
+      # Connection to the file
+      #
+      # @return [Storage]
+      #
+      # @api private
+      option :connection,
+             optional: true,
+             type: StorageType
 
       # Convert each CSV::Row to a hash
       #
@@ -17,23 +28,11 @@ module ROM
       end
 
       def reload!
-        @data = load_data
+        @data = connection.load
       end
 
       def sync!
-        write_data && reload!
-      end
-
-      def write_data
-        ::CSV.open(path, 'wb', file_options) do |csv|
-          data.to_a.each do |tuple|
-            csv << tuple
-          end
-        end
-      end
-
-      def load_data
-        ::CSV.table(path, file_options).by_row!
+        connection.dump(data) && reload!
       end
 
       def count

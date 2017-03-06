@@ -35,7 +35,7 @@ Or install it yourself as:
 
 ## Usage
 
-See `spec/integration/repository_spec.rb` or [examples/](https://github.com/rom-rb/rom-csv/tree/master/examples) folder for a sample usage.
+See `spec/integration/gateway_spec.rb` or [examples/](https://github.com/rom-rb/rom-csv/tree/master/examples) folder for a sample usage.
 
 ## License
 

@@ -3,14 +3,33 @@
 require 'bundler'
 Bundler.require
 
-if RUBY_ENGINE == 'rbx'
-  require 'codeclimate-test-reporter'
-  CodeClimate::TestReporter.start
+if RUBY_ENGINE == 'ruby' && ENV['CI'] == 'true'
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter '/spec/'
+  end
 end
 
 require 'rom'
 require 'rom-csv'
 
-root = Pathname(__FILE__).dirname
+SPEC_ROOT = root = Pathname(__FILE__).dirname
 
-Dir[root.join('support/*.rb').to_s].each { |f| require f }
+# Provide a `Types` module to specs
+require 'dry-types'
+module Types
+  include Dry::Types.module
+end
+
+RSpec.configure do |config|
+  config.before do
+    module Test
+    end
+  end
+
+  config.after do
+    Object.send(:remove_const, :Test)
+  end
+
+  Dir[root.join('support/*.rb').to_s].each { |f| require f }
+end
