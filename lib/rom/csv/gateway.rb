@@ -2,6 +2,7 @@ require 'rom/gateway'
 require 'rom/initializer'
 require 'rom/csv/dataset'
 require 'rom/csv/commands'
+require 'rom/csv/storage'
 
 # Ruby Object Mapper
 #
@@ -72,7 +73,7 @@ module ROM
       def initialize(*)
         super
         @datasets = {}
-        @connection = ::CSV.table(path, csv_options).by_row!
+        @connection = Storage.new(path, csv_options)
       end
 
       # Return dataset with the given name
@@ -94,7 +95,7 @@ module ROM
       #
       # @api public
       def dataset(name)
-        datasets[name] = Dataset.new(connection, dataset_options)
+        datasets[name] = Dataset.new(connection.load, connection: connection)
       end
 
       # Check if dataset exists
@@ -104,12 +105,6 @@ module ROM
       # @api public
       def dataset?(name)
         datasets.key?(name)
-      end
-
-      private
-
-      def dataset_options
-        { path: path, file_options: csv_options }
       end
     end
   end
