@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'virtus'
 
 describe 'Commands / Updates' do
+  before { skip }
   include_context 'database setup'
 
   subject(:users) { container.commands.users }

@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe 'Commands / Delete' do
+  before { skip }
   include_context 'database setup'
 
   subject(:users) { container.commands.users }

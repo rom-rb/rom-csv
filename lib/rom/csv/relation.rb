@@ -1,4 +1,4 @@
-require 'rom/relation'
+require 'rom/memory'
 
 module ROM
   module CSV
@@ -9,14 +9,8 @@ module ROM
     #   end
     #
     # @api public
-    class Relation < ROM::Relation
+    class Relation < ROM::Memory::Relation
       adapter :csv
-
-      forward :join, :project, :restrict, :order
-
-      def count
-        dataset.count
-      end
     end
   end
 end

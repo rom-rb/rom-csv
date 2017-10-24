@@ -1,20 +1,13 @@
 shared_context 'database setup' do
-  let(:configuration) do
-    ROM::Configuration.new(
-      default: [:csv, path],
-      users: [:csv, path],
-      addresses: [:csv, addresses_path],
-      utf8: [:csv, users_with_utf8_path, { encoding: 'iso-8859-2', col_sep: ';' }]
-    )
-  end
-  let(:container) { ROM.container(configuration) }
+  let(:conf) { ROM::Configuration.new(:csv, uri) }
+  let(:container) { ROM.container(conf) }
 
-  let(:original_path) { File.expand_path('./spec/fixtures/users.csv') }
-  let(:path) { File.expand_path('./spec/fixtures/testing.csv') }
-  let(:addresses_path) { File.expand_path('./spec/fixtures/addresses.csv') }
-  let(:users_with_utf8_path) { File.expand_path('./spec/fixtures/users.utf-8.csv') }
-
-  before do
-    FileUtils.copy(original_path, path)
+  let(:data_sources) do
+    {
+      users: File.expand_path('./spec/fixtures/users.csv'),
+      addresses: File.expand_path('./spec/fixtures/addresses.csv'),
+      utf8: File.expand_path('./spec/fixtures/users.utf-8.csv'),
+      database: File.expand_path('./spec/fixtures/db')
+    }
   end
 end

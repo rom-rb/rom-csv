@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'virtus'
 
 describe 'CSV gateway' do
+  before { skip }
   context 'without extra options' do
     include_context 'database setup'
 
