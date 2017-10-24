@@ -7,7 +7,6 @@ require 'ostruct'
 csv_file = ARGV[0] || File.expand_path("./users.csv", File.dirname(__FILE__))
 
 configuration = ROM::Configuration.new(:csv, csv_file)
-configuration.use(:macros)
 
 configuration.relation(:users) do
   def by_name(name)
