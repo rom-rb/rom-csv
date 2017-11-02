@@ -3,6 +3,12 @@
 require 'bundler'
 Bundler.require
 
+begin
+  require 'pry'
+rescue LoadError
+  nil
+end
+
 if RUBY_ENGINE == 'rbx'
   require 'codeclimate-test-reporter'
   CodeClimate::TestReporter.start
