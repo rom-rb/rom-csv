@@ -4,13 +4,9 @@ script: "bundle exec rake ci"
 env:
   - CODECLIMATE_REPO_TOKEN=a49f28520e49a35d73c9b6ed3d78ae110e4a5d05b9f154b999578a5175add09d
 rvm:
-  - 2.0
-  - 2.1
-  - 2.2
-  - 2.3.0
-  - rbx-2
-  - jruby-9000
-  - ruby-head
+  - 2.3.5
+  - 2.4.2
+  - jruby-9.1.13.0
 matrix:
   allow_failures:
     - rvm: ruby-head
