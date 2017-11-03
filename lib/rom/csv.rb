@@ -1,6 +1,5 @@
-require 'csv'
+require 'rom-core'
 
-require 'rom'
 require 'rom/csv/version'
 require 'rom/csv/gateway'
 require 'rom/csv/relation'

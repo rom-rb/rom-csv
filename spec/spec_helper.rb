@@ -1,14 +1,17 @@
-# encoding: utf-8
-
 require 'bundler'
-Bundler.require
+Bundler.setup
+
+begin
+  require 'pry'
+rescue LoadError
+  nil
+end
 
 if RUBY_ENGINE == 'rbx'
   require 'codeclimate-test-reporter'
   CodeClimate::TestReporter.start
 end
 
-require 'rom'
 require 'rom-csv'
 
 root = Pathname(__FILE__).dirname

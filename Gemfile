@@ -3,7 +3,8 @@ source 'https://rubygems.org'
 gemspec
 
 group :test do
-  gem 'rom', git: 'https://github.com/rom-rb/rom.git', branch: 'master'
+  gem 'pry-byebug', platforms: :mri
+  gem 'rom-repository', '~> 2.0'
   gem 'virtus'
   gem 'rspec', '~> 3.1'
   gem 'codeclimate-test-reporter', require: false

@@ -7,7 +7,6 @@ require 'ostruct'
 csv_file = ARGV[0] || File.expand_path("./users.csv", File.dirname(__FILE__))
 
 configuration = ROM::Configuration.new(:csv, csv_file)
-configuration.use(:macros)
 
 configuration.relation(:users) do
   def by_name(name)
@@ -27,7 +26,7 @@ end
 
 container = ROM.container(configuration)
 
-user = container.relation(:users).as(:entity).by_name('Jane').one
+user = container.relations[:users].as(:entity).by_name('Jane').one
 # => #<User id=2, name="Jane", email="jane@doe.org">
 
 user or abort "user not found"
