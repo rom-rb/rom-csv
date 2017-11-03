@@ -26,7 +26,7 @@ end
 
 container = ROM.container(configuration)
 
-user = container.relation(:users).as(:entity).by_name('Jane').one
+user = container.relations[:users].as(:entity).by_name('Jane').one
 # => #<User id=2, name="Jane", email="jane@doe.org">
 
 user or abort "user not found"
