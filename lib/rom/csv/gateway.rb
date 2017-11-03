@@ -46,27 +46,27 @@ module ROM
       # @return [Gateway]
       #
       # @api public
-      def self.new(path, *)
-        super(load_from(path))
+      def self.new(path, options = {})
+        super(load_from(path, options))
       end
 
       # Load data from CSV file(s)
       #
       # @api private
-      def self.load_from(path)
+      def self.load_from(path, options = {})
         if File.directory?(path)
-          load_files(path)
+          load_files(path, options)
         else
-          { source_name(path) => load_file(path) }
+          { source_name(path) => load_file(path, options) }
         end
       end
 
       # Load CSV files from a given directory and return a name => data map
       #
       # @api private
-      def self.load_files(path)
+      def self.load_files(path, options = {})
         Dir["#{path}/*.csv"].each_with_object({}) do |file, h|
-          h[source_name(file)] = load_file(file)
+          h[source_name(file)] = load_file(file, options)
         end
       end
 
@@ -77,8 +77,8 @@ module ROM
       # Load CSV file
       #
       # @api private
-      def self.load_file(path)
-        ::CSV.table(path).map(&:to_h)
+      def self.load_file(path, options = {})
+        ::CSV.table(path, options).map(&:to_h)
       end
 
       # @api private
