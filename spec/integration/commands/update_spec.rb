@@ -1,56 +1,47 @@
 require 'spec_helper'
-require 'virtus'
 
-describe 'Commands / Updates' do
-  include_context 'database setup'
-
-  subject(:users) { container.commands.users }
-
-  let(:relation) { container.relations.users }
-  let(:first_data) { relation.by_id(1).to_a.first }
-  let(:new_data) { { name: 'Peter' } }
-  let(:output_data) do
-    [{ user_id: 1, name: 'Julie', email: 'tester@example.com' }]
+RSpec.describe 'Commands / Updates' do
+  let(:configuration) do
+    ROM::Configuration.new(:csv, path)
   end
 
-  before do
-    configuration.relation(:users) do
+  let(:root) { Pathname(__FILE__).dirname.join('../..') }
+  let(:container) { ROM.container(configuration) }
+  let(:relations) { container[:relations] }
+
+  subject(:relation) { relations[:testing] }
+
+  let(:original_path) { "#{root}/fixtures/users.csv" }
+  let(:path) { "#{root}/fixtures/testing.csv" }
+
+  let(:testing_relation) do
+    Class.new(ROM::CSV::Relation) do
+      schema(:testing) do
+        attribute :user_id, ROM::Types::String
+        attribute :name, ROM::Types::String
+        attribute :email, ROM::Types::String
+      end
+
       def by_id(id)
         restrict(user_id: id)
       end
     end
+  end
 
-    class User
-      include Virtus.model
+  before do
+    FileUtils.copy(original_path, path)
 
-      attribute :id, Integer
-      attribute :name, String
-      attribute :email, String
-    end
-
-    configuration.mappers do
-      define(:users) do
-        model User
-        register_as :entity
-      end
-    end
-
-    configuration.commands(:users) do
-      define(:update)
-    end
+    configuration.register_relation(testing_relation)
   end
 
   it 'updates everything when there is no original tuple' do
-    result = users.try do
-      users.update.by_id(1).call(email: 'tester@example.com')
-    end
+    command = relation.command(:update)
+    result = command.by_id(1).call(email: 'tester@example.com')
 
-    expect(result.value.to_a).to match_array(output_data)
+    expect(result)
+      .to eql(user_id: 1, name: 'Julie', email: 'tester@example.com')
 
-    # FIXME: reload! should not be necessary
-    container.relation(:users).dataset.reload!
-
-    result = container.relation(:users).as(:entity).by_id(1).to_a.first
-    expect(result.email).to eql('tester@example.com')
+    result = relation.by_id(1).to_a.first
+    expect(result[:email]).to eql('tester@example.com')
   end
 end

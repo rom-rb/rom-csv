@@ -1,22 +1,15 @@
-require 'rom/relation'
+require 'rom/memory'
+require 'rom/csv/schema'
 
 module ROM
   module CSV
-    # Relation subclass of CSV adapter
+    # CSV-specific relation subclass
     #
-    # @example
-    #   class Users < ROM::Relation[:csv]
-    #   end
-    #
-    # @api public
-    class Relation < ROM::Relation
+    # @api private
+    class Relation < ROM::Memory::Relation
       adapter :csv
 
-      forward :join, :project, :restrict, :order
-
-      def count
-        dataset.count
-      end
+      schema_class CSV::Schema
     end
   end
 end

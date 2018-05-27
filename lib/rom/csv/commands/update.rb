@@ -1,46 +1,27 @@
-require 'rom/commands'
-require 'rom/commands/update'
-
 module ROM
   module CSV
     module Commands
-      class Update < ROM::Commands::Update
-        adapter :csv
-
-        def execute(tuple)
-          attributes = input[tuple]
-          validator.call(attributes)
-          tuple = attributes.to_h
-
-          update(tuple)
+      class Update < ROM::Memory::Commands::Update
+        def execute(params)
+          attributes = input[params].to_h
+          relation.map { |tuple| update(tuple, attributes) }.tap do
+            dataset.sync!
+          end
         end
 
-        def update(tuple)
-          original_data = original_dataset.to_a
-          output = []
+        private
 
-          dataset.each do |dataset_tuple|
-            index = original_data.index(dataset_tuple)
-            update_dataset(index, tuple)
-            output << original_dataset.data[index].to_hash
-          end
-
-          original_dataset.sync!
-          output
-        end
-
-        def update_dataset(index, tuple)
-          tuple.each do |key, value|
-            original_dataset.data[index][key] = value
-          end
+        def update(tuple, attributes)
+          index = data.index(tuple)
+          data[index].update(attributes)
         end
 
         def dataset
-          relation.dataset
+          source.dataset
         end
 
-        def original_dataset
-          source.dataset
+        def data
+          dataset.data
         end
       end
     end

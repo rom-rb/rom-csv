@@ -2,90 +2,127 @@ require 'rom/gateway'
 require 'rom/csv/dataset'
 require 'rom/csv/commands'
 
-# Ruby Object Mapper
-#
-# @see http://rom-rb.org/
 module ROM
-  # CSV support for ROM
-  #
-  # @example
-  #   require 'rom/csv'
-  #   require 'ostruct'
-  #
-  #   setup = ROM.setup(:csv, "./spec/fixtures/users.csv")
-  #   setup.relation(:users) do
-  #     def by_name(name)
-  #       dataset.find_all { |row| row[:name] == name }
-  #     end
-  #   end
-  #
-  #   class User < OpenStruct
-  #   end
-  #
-  #   setup.mappers do
-  #     define(:users) do
-  #       model User
-  #     end
-  #   end
-  #
-  #   rom = setup.finalize
-  #   p rom.read(:users).by_name('Jane').one
-  #   # => #<User id=2, name="Jane", email="jane@doe.org">
-  #
-  # **Note: rom-csv is read only at the moment.**
-  #
-  # @api public
   module CSV
-    # CSV gateway interface
+    # CSV gateway
+    #
+    # Connects to a csv file and uses it as a data-source
+    #
+    # @example
+    #   rom = ROM.container(:csv, '/path/to/data.yml')
+    #   gateway = rom.gateways[:default]
+    #   gateway[:users] # => data under 'users' key from the csv file
     #
     # @api public
     class Gateway < ROM::Gateway
-      # Expect a path to a single csv file which will be registered by rom to
-      # the given name or :default as the gateway.
+      adapter :csv
+
+      # @attr_reader [Hash] sources Data loaded from files
+      #
+      # @api private
+      attr_reader :sources
+
+      # @attr_reader [Hash] datasets CSV datasets from sources
+      #
+      # @api private
+      attr_reader :datasets
+
+      # Create a new csv gateway from a path to file(s)
+      #
+      # @example
+      #   gateway = ROM::CSV::Gateway.new('/path/to/files')
+      #
+      # @param [String, Pathname] path The path to your CSV file(s)
+      #
+      # @return [Gateway]
+      #
+      # @api public
+      def self.new(path, options = {})
+        super(load_from(path, options), options)
+      end
+
+      # Load data from csv file(s)
+      #
+      # @api private
+      def self.load_from(path, options = {})
+        if File.directory?(path)
+          load_files(path, options)
+        else
+          {
+            source_name(path) => {
+              data: load_file(path, options),
+              path: path
+            }
+          }
+        end
+      end
+
+      # Load csv files from a given directory and return a name => data map
+      #
+      # @api private
+      def self.load_files(path, options = {})
+        Dir["#{path}/*.csv"].each_with_object({}) do |file, h|
+          h[source_name(file)] = {
+            data: load_file(file, options),
+            path: file
+          }
+        end
+      end
+
+      def self.source_name(filename)
+        File.basename(filename, '.*')
+      end
+
+      # Load csv file
       #
       # Uses CSV.table which passes the following csv options:
       # * headers: true
       # * converters: numeric
       # * header_converters: :symbol
       #
-      # @param path [String] path to csv
-      # @param options [Hash] options passed to CSV.table
-      #
       # @api private
-      #
-      # @see CSV.table
-      def initialize(path, options = {})
-        @datasets = {}
-        @path = path
-        @options = options
-        @connection = ::CSV.table(path, options).by_row!
+      def self.load_file(path, options = {})
+        ::CSV.table(path, options).by_row!.map(&:to_hash)
       end
 
-      # Return dataset with the given name
+      # @param [Hash] sources The hashmap containing data loaded from files
       #
-      # @param name [String] dataset name
-      # @return [Dataset]
+      # @api private
+      def initialize(sources, options = {})
+        @sources = sources
+        @options = options
+        @datasets = {}
+      end
+
+      # Return dataset by its name
+      #
+      # @param [Symbol]
+      #
+      # @return [Array<Hash>]
       #
       # @api public
       def [](name)
-        datasets[name]
+        datasets.fetch(name)
       end
 
-      # Register a dataset in the gateway
+      # Register a new dataset
       #
-      # If dataset already exists it will be returned
+      # @param [Symbol]
       #
-      # @param name [String] dataset name
       # @return [Dataset]
       #
       # @api public
       def dataset(name)
-        datasets[name] = Dataset.new(connection, dataset_options)
+        dataset_source = sources.fetch(name.to_s)
+
+        datasets[name] = Dataset.new(
+          dataset_source.fetch(:data),
+          path: dataset_source.fetch(:path),
+          file_options: options
+        )
       end
 
-      # Check if dataset exists
-      #
-      # @param name [String] dataset name
+      # Return if a dataset with provided name exists
       #
       # @api public
       def dataset?(name)
@@ -94,12 +131,8 @@ module ROM
 
       private
 
-      def dataset_options
-        { path: path, file_options: options }
-      end
-
       # @api private
-      attr_reader :datasets, :path, :options
+      attr_reader :options
     end
   end
 end

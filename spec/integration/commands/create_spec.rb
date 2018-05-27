@@ -1,64 +1,58 @@
 require 'spec_helper'
-require 'virtus'
 
-describe 'Commands / Create' do
-  include_context 'database setup'
+RSpec.describe 'Commands / Create' do
+  let(:configuration) do
+    ROM::Configuration.new(:csv, path)
+  end
 
-  subject(:users) { container.commands.users }
+  let(:root) { Pathname(__FILE__).dirname.join('../..') }
+  let(:container) { ROM.container(configuration) }
+  let(:relations) { container[:relations] }
+
+  subject(:relation) { relations[:testing] }
+
+  let(:original_path) { "#{root}/fixtures/users.csv" }
+  let(:path) { "#{root}/fixtures/testing.csv" }
+
+  let(:testing_relation) do
+    Class.new(ROM::CSV::Relation) do
+      schema(:testing) do
+        attribute :user_id, ROM::Types::String
+        attribute :name, ROM::Types::String
+        attribute :email, ROM::Types::String
+      end
+    end
+  end
 
   before do
-    configuration.relation(:users)
+    FileUtils.copy(original_path, path)
 
-    class User
-      include Virtus.model
-
-      attribute :id, Integer
-      attribute :name, String
-      attribute :email, String
-    end
-
-    configuration.mappers do
-      define(:users) do
-        model User
-        register_as :entity
-      end
-    end
-
-    configuration.commands(:users) do
-      define(:create) do
-        result :one
-      end
-
-      define(:create_many, type: :create) do
-        result :many
-      end
-    end
+    configuration.register_relation(testing_relation)
   end
 
   it 'returns a single tuple when result is set to :one' do
-    result = users.try do
-      users.create.call(user_id: 4, name: 'John', email: 'john@doe.org')
-    end
-    expect(result.value).to eql(user_id: 4, name: 'John', email: 'john@doe.org')
+    command = relation.command(:create, result: :one)
+    result = command.call(user_id: 4, name: 'John', email: 'john@doe.org')
+    expect(result)
+      .to eql(user_id: 4, name: 'John', email: 'john@doe.org')
 
-    result = container.relation(:users).as(:entity).to_a
-    expect(result.count).to eql(4)
+    expect(relation.to_a.size).to eql(4)
   end
 
   it 'returns tuples when result is set to :many' do
-    result = users.try do
-      users.create_many.call([
-        { user_id: 4, name: 'Jane', email: 'jane@doe.org' },
-        { user_id: 5, name: 'Jack', email: 'jack@doe.org' }
-      ])
-    end
+    command = relation.command(:create, result: :many)
+    result = command
+             .call([
+                     { user_id: 4, name: 'Jane', email: 'jane@doe.org' },
+                     { user_id: 5, name: 'Jack', email: 'jack@doe.org' }
+                   ])
 
-    expect(result.value.to_a).to match_array([
-      { user_id: 4, name: 'Jane', email: 'jane@doe.org' },
-      { user_id: 5, name: 'Jack', email: 'jack@doe.org' }
-    ])
+    expect(result)
+      .to match_array([
+                        { user_id: 4, name: 'Jane', email: 'jane@doe.org' },
+                        { user_id: 5, name: 'Jack', email: 'jack@doe.org' }
+                      ])
 
-    result = container.relation(:users).as(:entity).to_a
-    expect(result.count).to eql(5)
+    expect(relation.to_a.size).to eql(5)
   end
 end
