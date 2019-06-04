@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_context 'database setup' do
   let(:configuration) do
     ROM::Configuration.new(
@@ -5,7 +7,7 @@ shared_context 'database setup' do
       users: [:csv, path],
       addresses: [:csv, addresses_path],
       utf8: [:csv, users_with_utf8_path, { encoding: 'iso-8859-2', col_sep: ';' }]
-    ).use(:macros)
+    )
   end
   let(:container) { ROM.container(configuration) }
 
