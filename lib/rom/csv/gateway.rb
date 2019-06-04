@@ -40,6 +40,8 @@ module ROM
     #
     # @api public
     class Gateway < ROM::Gateway
+      adapter :csv
+
       # Expect a path to a single csv file which will be registered by rom to
       # the given name or :default as the gateway.
       #
