@@ -18,9 +18,9 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency 'rom', '~> 1.0'
+  spec.add_runtime_dependency 'rom', '~> 5.0'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'rubocop', '~> 0.28.0'
+  spec.add_development_dependency 'rubocop', '>= 0.49.0'
 end
