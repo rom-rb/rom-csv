@@ -6,8 +6,8 @@ module ROM
     #
     # @api public
     class Dataset < ROM::Memory::Dataset
-      option :path, reader: true
-      option :file_options, reader: true
+      option :path, reader: true, optional: true
+      option :file_options, reader: true, optional: true
 
       # Convert each CSV::Row to a hash
       #
