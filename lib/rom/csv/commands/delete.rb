@@ -16,7 +16,7 @@ module ROM
           end
 
           original_dataset.sync!
-          dataset.data
+          dataset.data.map(&:to_hash)
         end
 
         def dataset
