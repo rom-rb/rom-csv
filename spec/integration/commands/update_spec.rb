@@ -48,9 +48,9 @@ describe 'Commands / Updates' do
     expect(result.value.to_a).to match_array(output_data)
 
     # FIXME: reload! should not be necessary
-    container.relation(:users).dataset.reload!
+    container.relations[:users].dataset.reload!
 
-    result = container.relation(:users).as(:entity).by_id(1).to_a.first
+    result = container.relations[:users].map_with(:entity).by_id(1).to_a.first
     expect(result.email).to eql('tester@example.com')
   end
 end

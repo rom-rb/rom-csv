@@ -32,9 +32,9 @@ describe 'Commands / Delete' do
     expect(result.value)
       .to eql(user_id: 1, name: "Julie", email: "julie.andrews@example.com")
 
-    container.relation(:users).dataset.reload!
+    container.relations[:users].dataset.reload!
 
-    result = container.relation(:users).to_a
+    result = container.relations[:users].to_a
     expect(result.count).to eql(2)
   end
 end

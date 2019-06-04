@@ -41,7 +41,7 @@ describe 'Commands / Create' do
     end
     expect(result.value).to eql(user_id: 4, name: 'John', email: 'john@doe.org')
 
-    result = container.relation(:users).as(:entity).to_a
+    result = container.relations[:users].as(:entity).to_a
     expect(result.count).to eql(4)
   end
 
@@ -58,7 +58,7 @@ describe 'Commands / Create' do
       { user_id: 5, name: 'Jack', email: 'jack@doe.org' }
     ])
 
-    result = container.relation(:users).as(:entity).to_a
+    result = container.relations[:users].as(:entity).to_a
     expect(result.count).to eql(5)
   end
 end
