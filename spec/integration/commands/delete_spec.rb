@@ -27,9 +27,9 @@ describe 'Commands / Delete' do
   end
 
   it 'deletes all tuples in a restricted relation' do
-    result = users.try { users.delete.by_id(1).call }
+    result = users.delete.by_id(1).call
 
-    expect(result.value)
+    expect(result)
       .to eql(user_id: 1, name: "Julie", email: "julie.andrews@example.com")
 
     container.relations[:users].dataset.reload!

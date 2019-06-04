@@ -41,11 +41,9 @@ describe 'Commands / Updates' do
   end
 
   it 'updates everything when there is no original tuple' do
-    result = users.try do
-      users.update.by_id(1).call(email: 'tester@example.com')
-    end
+    result = users.update.by_id(1).call(email: 'tester@example.com')
 
-    expect(result.value.to_a).to match_array(output_data)
+    expect(result.to_a).to match_array(output_data)
 
     # FIXME: reload! should not be necessary
     container.relations[:users].dataset.reload!
