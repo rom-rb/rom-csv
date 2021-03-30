@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rom-csv'
 
 csv_file = ARGV[0] || File.expand_path("./users.csv", File.dirname(__FILE__))

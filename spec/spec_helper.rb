@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if RUBY_ENGINE == 'ruby' && RUBY_VERSION >= '2.4.0' && ENV['CI'] == 'true'
   require 'simplecov'
   SimpleCov.start do
