@@ -1,40 +1,48 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
-describe 'Commands / Delete' do
-  include_context 'database setup'
+RSpec.describe 'Commands / Delete' do
+  let(:configuration) do
+    ROM::Configuration.new(:csv, path)
+  end
 
-  subject(:users) { container.commands.users }
+  let(:root) { Pathname(__FILE__).dirname.join('../..') }
+  let(:container) { ROM.container(configuration) }
+  let(:relations) { container[:relations] }
 
-  before do
-    configuration.relation(:users) do
+  subject(:relation) { relations[:testing] }
+
+  let(:original_path) { "#{root}/fixtures/users.csv" }
+  let(:path) { "#{root}/fixtures/testing.csv" }
+
+  let(:testing_relation) do
+    Class.new(ROM::CSV::Relation) do
+      schema(:testing) do
+        attribute :user_id, ROM::Types::String
+        attribute :name, ROM::Types::String
+        attribute :email, ROM::Types::String
+      end
+
       def by_id(id)
         restrict(user_id: id)
       end
     end
-
-    configuration.commands(:users) do
-      define(:delete) do
-        result :one
-      end
-    end
   end
 
-  it 'raises error when tuple count does not match expectation' do
-    result = users.try { users.delete.call }
+  before do
+    FileUtils.copy(original_path, path)
 
-    expect(result.value).to be(nil)
-    expect(result.error).to be_instance_of(ROM::TupleCountMismatchError)
+    configuration.register_relation(testing_relation)
   end
 
   it 'deletes all tuples in a restricted relation' do
-    result = users.try { users.delete.by_id(1).call }
+    command = relation.command(:delete, result: :one).by_id(1)
+    result = command.call
 
-    expect(result.value)
+    expect(result)
       .to eql(user_id: 1, name: "Julie", email: "julie.andrews@example.com")
 
-    container.relation(:users).dataset.reload!
-
-    result = container.relation(:users).to_a
-    expect(result.count).to eql(2)
+    expect(relation.to_a.size).to eql(2)
   end
 end

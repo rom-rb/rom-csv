@@ -1,15 +1,16 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 gemspec
 
 group :test do
-  gem 'rom', git: 'https://github.com/rom-rb/rom.git', branch: 'master'
-  gem 'virtus'
-  gem 'rspec', '~> 3.1'
+  gem 'byebug', platform: :mri
   gem 'codeclimate-test-reporter', require: false
   gem 'inflecto'
+  gem 'rspec', '~> 3.1'
 end
 
 group :tools do
-  gem 'rubocop'
+  gem 'rubocop', '0.82.0'
 end

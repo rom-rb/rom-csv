@@ -6,13 +6,10 @@ Lint/AssignmentInCondition:
   Enabled: false
 
 # No need to handle LoadError in rake
-Lint/HandleExceptions:
+Lint/SuppressedException:
   Exclude:
     - rakelib/*.rake
-
-# The enforced style doesn’t match Vim’s defaults
-Style/AlignParameters:
-  Enabled: false
+    - spec/spec_helper.rb
 
 # UTF-8 is perfectly fine in comments
 Style/AsciiComments:
@@ -61,3 +58,7 @@ Style/FileName:
 # Allow logical `or`/`and` in conditionals
 Style/AndOr:
   EnforcedStyle: conditionals
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*_spec.rb'
